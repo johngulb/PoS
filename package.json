@@ -2,8 +2,9 @@
   "name": "node-pos",
   "version": "1.0.0",
   "description": "A point-of-sale system written in node",
-  "main": "index.js",
+  "main": "serve.js",
   "scripts": {
+    "start": "node serve",
     "test": "mocha"
   },
   "keywords": [
