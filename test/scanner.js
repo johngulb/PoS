@@ -18,7 +18,7 @@ describe('Scanner', () => {
   })
 
   context('remove item on special', () => {
-    it('removing 2nd item on "Buy 2 get 1 half off special." should invalidate special', () => {
+    it('should invalidate special when removing 2nd item on "Buy 2 get 1 half off special."', () => {
       assert(0);
     })
   })
