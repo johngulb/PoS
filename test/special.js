@@ -94,4 +94,16 @@ describe('Extract specials attributes', () => {
 
   })
 
+  context('Buy N, get M of equal or lesser value for %X off', () => {
+
+    it('buy 1 get 1 of equal or lesser value for 50% off', () => {
+      let special = 'buy 1 get 1 free';
+      expect(Special.isBuyGet(special)).to.equal(true);
+      expect(Special.buyCount(special)).to.equal(1);
+      expect(Special.getCount(special)).to.equal(1);
+      expect(Special.limit(special)).to.equal(undefined);
+    })
+
+  })
+
 });

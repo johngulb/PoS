@@ -1,6 +1,8 @@
 const chai = require('chai');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
+const Special = require('../special');
+
 
 describe('Calculate eaches subtotal', () => {
 
@@ -274,6 +276,50 @@ describe('Calculate item by weight subtotal', () => {
   })
 
 })
+
+describe('Calculate item by weight subtotal, specials', () => {
+
+  let special = 'buy 1 get 1 of equal or lesser value for 50% off';
+
+  beforeEach(() => {
+    inventory = require('../inventory');
+    order = require('../order');
+    order.clear();
+    inventory.add({
+      upc: 'steak',
+      price: 6.99,
+      per: 'pound',
+      special: special,
+      markdown: 0.00,
+    });
+  })
+
+  context('buy 1 get 1 of equal or lesser value for 50% off', () => {
+
+    it('extacts correct values from special', () => {
+      expect(Special.isBuyGet(special)).to.equal(true);
+      expect(Special.buyCount(special)).to.equal(1);
+      expect(Special.getCount(special)).to.equal(1);
+      expect(Special.discount(special)).to.equal(0.5);
+    })
+
+    it('purchase 1 @ 1.5 lb should cost $10.49', () => {
+      order.add('steak', 1.5);
+      let subtotal = order.subtotal('steak');
+      expect(subtotal).to.equal(10.49);
+    })
+
+    it('purchase 1 @ 1.5 lb and 1 @ 1lb should cost $13.97', () => {
+      order.add('steak', 1.5);
+      order.add('steak', 1);
+      let subtotal = order.subtotal('steak');
+      expect(subtotal).to.equal(13.97);
+    })
+
+  })
+
+})
+
 
 // describe('Calculate items subtotal', () => {
 //
