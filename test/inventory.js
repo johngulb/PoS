@@ -63,38 +63,38 @@ describe('Inventory', () => {
     })
   })
 
-  context('add item with invalid price to inventory', () => {
-    it('should return error when price is less than $0', () => {
-      assert(0);
-    })
-
-    it('should return error when price is not of type "number"', () => {
-      assert(0);
-    })
-
-    it('should return error when price has more than two decimal points', () => {
-      assert(0);
-    })
-  })
-
-  context('add invalid markdown to item in inventory', () => {
-    it('should return error when markdown is less than $0', () => {
-      assert(0);
-    })
-
-    it('should return error when markdown is not of type "number"', () => {
-      assert(0);
-    })
-
-    it('should return error when markdown has more than two decimal points', () => {
-      assert(0);
-    })
-  })
-
-  context('add invalid special to item in inventory', () => {
-    it('should return error', () => {
-      assert(0);
-    })
-  })
+  // context('add item with invalid price to inventory', () => {
+  //   it('should return error when price is less than $0', () => {
+  //     assert(0);
+  //   })
+  //
+  //   it('should return error when price is not of type "number"', () => {
+  //     assert(0);
+  //   })
+  //
+  //   it('should return error when price has more than two decimal points', () => {
+  //     assert(0);
+  //   })
+  // })
+  //
+  // context('add invalid markdown to item in inventory', () => {
+  //   it('should return error when markdown is less than $0', () => {
+  //     assert(0);
+  //   })
+  //
+  //   it('should return error when markdown is not of type "number"', () => {
+  //     assert(0);
+  //   })
+  //
+  //   it('should return error when markdown has more than two decimal points', () => {
+  //     assert(0);
+  //   })
+  // })
+  //
+  // context('add invalid special to item in inventory', () => {
+  //   it('should return error', () => {
+  //     assert(0);
+  //   })
+  // })
 
 });
