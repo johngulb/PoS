@@ -36,20 +36,34 @@ module.exports = {
     if(group.item.special) {
 
       // force special text to lower, to easily ignore casing
-      let special = group.item.special.toLowerCase();
+      let special = group.item.special.toLowerCase().replace(',','');
 
       if(group.item.per === 'unit') {
         // per unit specials
         let matches = null;
-        // "Buy N get M %X off"
-        if((matches = special.match(/buy ([0-9+]) get ([0-9+]) ([0-9+]{1,3}%|half|free)( off)?/))) {
-          let n = Number(matches[1]), m = Number(matches[2]), x = matches[3];
-          let extra = group.size % (n + m);
+        // "Buy N get M"
+        if((matches = special.match(/buy ([0-9+]) get ([0-9+])/))) {
+          let buy = Number(matches[1]),
+              get = Number(matches[2]),
+              pct = Special.discount(special),
+              limit = Special.limit(special);
+          let over_limit = limit && group.size > limit;
+          let apply_to = over_limit ? limit : group.size;
+          let extra = apply_to % (buy + get);
+          // Add the extra item over the limit
+          if(over_limit)
+            extra += group.size - limit;
+          // number of items to apply the special
           let on_special = group.size - extra;
-          let regular = on_special / (n + m) * n + extra;
-          let discounted = on_special / (n + m) * m;
-          let pct = Special.parsePercent(x);
-          subtotal = regular * cost(group.item.price, group.item.markdown) + discounted * cost(group.item.price, group.item.markdown, pct);
+          // number of regular price items
+          let num_regular_items = on_special / (buy + get) * buy + extra;
+          // number of discounted items
+          let num_discounted_items = on_special / (buy + get) * get;
+          // cost of regular items
+          let regular_cost = num_regular_items * cost(group.item.price, group.item.markdown);
+          // cost of discounted items
+          let discounted_cost = num_discounted_items * cost(group.item.price, group.item.markdown, pct);
+          subtotal = regular_cost + discounted_cost;
         }
       } else if(group.item.per === 'pound') {
         // per pound specials
