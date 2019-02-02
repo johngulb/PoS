@@ -101,17 +101,38 @@ module.exports = {
           let buy_count = Special.buyCount(special);
           // number the special applies to
           let get_count = Special.getCount(special);
-          // discounted price
-          let discounted_price = Special.forEachPrice(special);
 
+          // sort weights, by highest first to ensure the most expensive items are bought at regular price
+          let weights = group.weights.slice();
+          weights.sort().reverse();
+
+          // console.log(`BUY: ${buy_count} GET: ${get_count} DISCOUNT: ${percent_discount} WEIGHTS: `, weights);
+
+          let bought = 0;
+          // pop off the number of items until we git the buy count
+          while (weights.length) {
+            let buy_weight = weights.shift();
+            subtotal += buy_weight * cost(group.item.price, group.item.markdown);
+            bought++;
+            // once we hit the buy count, start tallying items at discount
+            if(buy_count === bought && get_count) {
+              let get = 0;
+              while (weights.length) {
+                let get_weight = weights.shift();
+                subtotal += get_weight * cost(group.item.price, group.item.markdown, percent_discount);
+                if(get === get_count) {
+                  break;
+                }
+              }
+            }
+          }
         }
       }
     } else {
+      // no special
       if(group.item.per === 'unit') {
-        // no special
         subtotal = (group.item.price - group.item.markdown) * group.count;
       } else if(group.item.per === 'pound') {
-        // no special
         subtotal = (group.item.price - group.item.markdown) * group.weights.reduce((acc, i) => acc + i);
       }
     }

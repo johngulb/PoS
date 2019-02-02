@@ -294,7 +294,7 @@ describe('Calculate item by weight subtotal, specials', () => {
     });
   })
 
-  context('buy 1 get 1 of equal or lesser value for 50% off', () => {
+  context('buy 1 get 1 of equal or lesser value for 50% off, 4', () => {
 
     it('extacts correct values from special', () => {
       expect(Special.isBuyGet(special)).to.equal(true);
@@ -303,10 +303,10 @@ describe('Calculate item by weight subtotal, specials', () => {
       expect(Special.discount(special)).to.equal(0.5);
     })
 
-    it('purchase 1 @ 1.5 lb should cost $10.49', () => {
+    it('purchase 1 @ 1.5 lb should cost $10.48', () => {
       order.add('steak', 1, 1.5);
       let subtotal = order.subtotal('steak');
-      expect(subtotal).to.equal(10.49);
+      expect(subtotal).to.equal(10.48);
     })
 
     it('purchase 1 @ 1.5 lb and 1 @ 1lb should cost $13.97', () => {
