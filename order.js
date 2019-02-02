@@ -65,7 +65,11 @@ module.exports = {
           let discounted_cost = num_discounted_items * cost(group.item.price, group.item.markdown, percent_discount);
           subtotal = regular_cost + discounted_cost;
         } else if(Special.isForEach(special)) {
-
+          let discounted_price = Special.forEachPrice(special);
+          let over_limit = limit && group.size > limit;
+          let apply_to = over_limit ? limit : group.size;
+          let extra = group.size - apply_to;
+          subtotal = apply_to * discounted_price + extra * group.item.price;
         }
       } else if(group.item.per === 'pound') {
         // per pound specials
