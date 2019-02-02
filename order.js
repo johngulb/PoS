@@ -42,12 +42,12 @@ module.exports = {
         // per unit specials
         let matches = null;
         // "Buy N get M %X off"
-        if((matches = special.match(/buy ([0-9+]) get ([0-9+]) ([0-9+]{1,3}%|half|free) off?/))) {
+        if((matches = special.match(/buy ([0-9+]) get ([0-9+]) ([0-9+]{1,3}%|half|free)( off)?/))) {
           let n = Number(matches[1]), m = Number(matches[2]), x = matches[3];
           let extra = group.size % (n + m);
-          let special = group.size - extra;
-          let regular = special / (n + m) * n + extra;
-          let discounted = special / (n + m) * m;
+          let on_special = group.size - extra;
+          let regular = on_special / (n + m) * n + extra;
+          let discounted = on_special / (n + m) * m;
           let pct = Special.parsePercent(x);
           subtotal = regular * cost(group.item.price, group.item.markdown) + discounted * cost(group.item.price, group.item.markdown, pct);
         }
