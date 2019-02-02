@@ -25,7 +25,7 @@ describe('Scanner', () => {
       let weight = 0.5;
       order.add('apple', weight);
       let apples = order.lookup('apple');
-      expect(apples.value).to.equal(weight);
+      expect(apples.size).to.equal(weight);
     })
   })
 

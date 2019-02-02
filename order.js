@@ -2,22 +2,24 @@ const Inventory = require('./inventory');
 
 module.exports = {
 
-  items: {
+  items: {},
 
+  add(upc, size = 1) {
+    if(!this.items[upc]) {
+      item = Inventory.lookup(upc);
+      this.items[upc] = {
+        size: 0,
+        item: item,
+      };
+    }
+    this.items[upc].size += size;
   },
 
-  add(upc, value = 1) {
+  remove(upc, size = 1) {
     if(!this.items[upc]) {
-      this.items[upc] = {value: 0};
+      this.items[upc] = {size: 0};
     }
-    this.items[upc].value += value;
-  },
-
-  remove(upc, value = 1) {
-    if(!this.items[upc]) {
-      this.items[upc] = {value: 0};
-    }
-    this.items[upc].value -= value;
+    this.items[upc].size -= size;
   },
 
   lookup(upc) {
@@ -25,11 +27,16 @@ module.exports = {
   },
 
   subtotal(upc) {
-
+    let group = this.items[upc];
+    return Math.floor((group.item.price * group.size) * 100) / 100;
   },
 
   total() {
 
   },
+
+  clear() {
+    this.items = {};
+  }
 
 };

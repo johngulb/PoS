@@ -5,9 +5,28 @@ const expect = require('chai').expect;
 
 describe('Calculate item subtotals', () => {
 
+  beforeEach(() => {
+    inventory = require('../inventory');
+    order = require('../order');
+    order.clear();
+    inventory.add({
+      upc: 'apple',
+      price: 0.99,
+      per: 'pound',
+      markdown: 0.00,
+    });
+  })
+
   context('by weight subtotal', () => {
-    it('TODO: add test case', () => {
-      assert(0);
+    it('1 lb apples for $0.99 per pound should cost $0.99', () => {
+      order.add('apple', 1);
+      let subtotal = order.subtotal('apple');
+      expect(subtotal).to.equal(0.99);
+    })
+    it('2.5 lbs of apples for $0.99 per pound should cost $2.47 (floor beyond second decimal, i.e. not $2.475)', () => {
+      order.add('apple', 2.5);
+      let subtotal = order.subtotal('apple');
+      expect(subtotal).to.equal(2.47);
     })
   })
 
