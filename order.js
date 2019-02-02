@@ -38,17 +38,21 @@ module.exports = {
       // force special text to lower, to easily ignore casing
       let special = group.item.special.toLowerCase().replace(',','');
 
+      let percent_discount = Special.discount(special);
+      let limit = Special.limit(special);
+      let over_limit = limit && group.size > limit;
+      let apply_to = over_limit ? limit : group.size;
+
       if(group.item.per === 'unit') {
         // per unit specials
         let matches = null;
-        let percent_discount = Special.discount(special);
-        let limit = Special.limit(special);
         // "Buy N get M"
         if(Special.isBuyGet(special)) {
+          // number to buy that triggers special
           let buy_count = Special.buyCount(special);
+          // number the special applies to
           let get_count = Special.getCount(special);
-          let over_limit = limit && group.size > limit;
-          let apply_to = over_limit ? limit : group.size;
+          // determine number items that do not apply to special
           let extra = apply_to % (buy_count + get_count);
           // Add the extra item over the limit
           if(over_limit)
@@ -65,9 +69,9 @@ module.exports = {
           let discounted_cost = num_discounted_items * cost(group.item.price, group.item.markdown, percent_discount);
           subtotal = regular_cost + discounted_cost;
         } else if(Special.isForEach(special)) {
+          // discounted price
           let discounted_price = Special.forEachPrice(special);
-          let over_limit = limit && group.size > limit;
-          let apply_to = over_limit ? limit : group.size;
+          // determine number items that do not apply to special
           let extra = group.size - apply_to;
           subtotal = apply_to * discounted_price + extra * group.item.price;
         }
