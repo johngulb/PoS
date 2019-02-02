@@ -5,33 +5,61 @@ const expect = require('chai').expect;
 
 describe('Inventory', () => {
 
+  let inventory;
+
+  beforeEach(() => {
+    inventory = require('../inventory');
+    inventory.add({
+      upc: 'apple',
+      price: 0.99,
+      per: 'unit',
+      markdown: 0.00,
+      special: 'buy 1 get 1 free'
+    });
+  });
+
   context('add item to inventory', () => {
     it('should be stored in inventory', () => {
-      assert(0);
+      let item = inventory.lookup('apple');
+      expect(item).to.be.a('object');
     })
   })
 
   context('remove item from inventory', () => {
     it('should no longer be in inventory', () => {
-      assert(0);
+      inventory.remove('apple');
+      let item = inventory.lookup('apple');
+      expect(item).to.be.undefined;
     })
   })
 
   context('modify inventory item price', () => {
-    it('should update item price', () => {
-      assert(0);
+    it('should update valid item price', () => {
+      inventory.update('apple', 'price', 1.19);
+      let item = inventory.lookup('apple');
+      expect(item.price).to.be.a('number');
+      expect(item.price).to.equal(1.19);
+      expect(item.price > 0).to.equal(true);
     })
   })
 
   context('modify inventory item special', () => {
     it('should update item special', () => {
-      assert(0);
+      let updated_special = 'buy 1 get 1 free';
+      inventory.update('apple', 'special', updated_special);
+      let item = inventory.lookup('apple');
+      expect(item.special).to.be.a('string');
+      expect(item.special).to.equal(updated_special);
     })
   })
 
   context('modify inventory item markdown', () => {
-    it('should update item markdown', () => {
-      assert(0);
+    it('should be a valid item markdown', () => {
+      let updated_markdown = 'buy 1 get 1 free';
+      inventory.update('apple', 'markdown', updated_markdown);
+      let item = inventory.lookup('apple');
+      expect(item.markdown).to.be.a('number');
+      expect(item.markdown).to.equal(updated_markdown);
     })
   })
 
