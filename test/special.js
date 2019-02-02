@@ -67,16 +67,22 @@ describe('Extract specials attributes', () => {
 
   context('N for $X', () => {
 
-    it('4 for $2', () => {
-      expect(Special.isForEach("4 for $2")).to.equal(true);
+    it('4 for $8', () => {
+      let special = "4 for $8";
+      expect(Special.isForEach(special)).to.equal(true);
+      expect(Special.forEachPrice(special)).to.equal(2.0);
     })
 
-    it('4 for $2.00', () => {
-      expect(Special.isForEach("4 for $2.00")).to.equal(true);
+    it('4 for $8.00', () => {
+      let special = "4 for $8.00";
+      expect(Special.isForEach(special)).to.equal(true);
+      expect(Special.forEachPrice(special)).to.equal(2.0);
     })
 
-    it('four for $2.00', () => {
-      expect(Special.isForEach("four for $2.00")).to.equal(true);
+    it('four for $8.00', () => {
+      let special = "four for $8.00";
+      expect(Special.isForEach(special)).to.equal(true);
+      expect(Special.forEachPrice(special)).to.equal(2.0);
     })
 
   })

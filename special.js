@@ -7,7 +7,7 @@ module.exports = {
   },
 
   isForEach(special) {
-    return special.match(/([0-9]+|[A-z]+) for \$[0-9]+(\.\d{2})?/) ?  true : false;
+    return special.match(/([0-9]+|[A-z]+) for \$([0-9]+(\.\d{2})?)/) ?  true : false;
   },
 
   buyCount(special) {
@@ -16,6 +16,21 @@ module.exports = {
 
   getCount(special) {
     return this.extactNumbericValue(special, 'get');
+  },
+
+  forEachPrice(special) {
+    let matches = special.match(/([0-9]+|[A-z]+) for \$([0-9]+(\.\d{2})?)/);
+    if(matches) {
+      let count = matches[1];
+      let total = Number(matches[2]);
+      if(!Number(count)) {
+        count = word_to_number(count);
+        return count ?  total / count : undefined;
+      } else {
+        return total / Number(count);
+      }
+    }
+    return undefined;
   },
 
   discount(special) {
