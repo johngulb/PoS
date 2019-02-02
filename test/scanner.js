@@ -5,6 +5,30 @@ const expect = require('chai').expect;
 
 describe('Scanner', () => {
 
+  let inventory;
+  let order;
+
+  beforeEach(() => {
+    inventory = require('../inventory');
+    order = require('../order');
+    inventory.add({
+      upc: 'apple',
+      price: 0.99,
+      per: 'pound',
+      markdown: 0.00,
+      special: 'buy 1 get 1 free'
+    });
+  })
+
+  context('add item', () => {
+    it('should update order', () => {
+      let weight = 0.5;
+      order.add('apple', weight);
+      let apples = order.lookup('apple');
+      expect(apples.value).to.equal(weight);
+    })
+  })
+
   context('add item, not in inventory', () => {
     it('should return invalid item error', () => {
       assert(0);
