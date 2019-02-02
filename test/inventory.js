@@ -55,7 +55,7 @@ describe('Inventory', () => {
 
   context('modify inventory item markdown', () => {
     it('should be a valid item markdown', () => {
-      let updated_markdown = 'buy 1 get 1 free';
+      let updated_markdown = 0.19;
       inventory.update('apple', 'markdown', updated_markdown);
       let item = inventory.lookup('apple');
       expect(item.markdown).to.be.a('number');
