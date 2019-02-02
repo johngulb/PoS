@@ -41,12 +41,11 @@ module.exports = {
       if(group.item.per === 'unit') {
         // per unit specials
         let matches = null;
+        let percent_discount = Special.discount(special);
+        let limit = Special.limit(special);
         // "Buy N get M"
         if((matches = special.match(/buy ([0-9+]) get ([0-9+])/))) {
-          let buy = Number(matches[1]),
-              get = Number(matches[2]),
-              pct = Special.discount(special),
-              limit = Special.limit(special);
+          let buy = Number(matches[1]), get = Number(matches[2]);
           let over_limit = limit && group.size > limit;
           let apply_to = over_limit ? limit : group.size;
           let extra = apply_to % (buy + get);
@@ -62,7 +61,7 @@ module.exports = {
           // cost of regular items
           let regular_cost = num_regular_items * cost(group.item.price, group.item.markdown);
           // cost of discounted items
-          let discounted_cost = num_discounted_items * cost(group.item.price, group.item.markdown, pct);
+          let discounted_cost = num_discounted_items * cost(group.item.price, group.item.markdown, percent_discount);
           subtotal = regular_cost + discounted_cost;
         }
       } else if(group.item.per === 'pound') {
