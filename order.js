@@ -6,22 +6,41 @@ module.exports = {
 
   items: {},
 
-  add(upc, size = 1) {
-    if(!this.items[upc]) {
-      item = Inventory.lookup(upc);
-      this.items[upc] = {
-        size: 0,
-        item: item,
-      };
+  add(upc, count = 1, weight = 0.0) {
+    item = Inventory.lookup(upc);
+    if(item.per === 'pound') {
+      if(!this.items[upc]) {
+        this.items[upc] = {
+          item: item,
+          count: 0,
+          weights : []
+        };
+      }
+      this.items[upc].weights.push(weight);
+      this.items[upc].count = this.items[upc].weights.length;
+    }else if(item.per === 'unit') {
+      if(!this.items[upc]) {
+        this.items[upc] = {
+          item: item,
+          count: 0
+        };
+      }
+      this.items[upc].count += count;
     }
-    this.items[upc].size += size;
   },
 
-  remove(upc, size = 1) {
-    if(!this.items[upc]) {
-      this.items[upc] = {size: 0};
+  remove(upc, weight = 0.0) {
+    item = Inventory.lookup(upc);
+    if(item.per === 'pound') {
+      let weights = this.items[upc].weights;
+      let i = weights.indexOf(weight);
+      weights.spice(i, 1);
+      this.items[upc].count = this.items[upc].weights.length;
+    } else {
+      if(this.items[upc].count > 0) {
+        this.items[upc].count -= count;
+      }
     }
-    this.items[upc].size -= size;
   },
 
   lookup(upc) {
@@ -40,13 +59,13 @@ module.exports = {
 
       let percent_discount = Special.discount(special);
       let limit = Special.limit(special);
-      let over_limit = limit && group.size > limit;
-      let apply_to = over_limit ? limit : group.size;
+      let over_limit = limit && group.count > limit;
+      let apply_to = over_limit ? limit : group.count;
 
       if(group.item.per === 'unit') {
         // per unit specials
         let matches = null;
-        // "Buy N get M"
+
         if(Special.isBuyGet(special)) {
           // number to buy that triggers special
           let buy_count = Special.buyCount(special);
@@ -56,9 +75,9 @@ module.exports = {
           let extra = apply_to % (buy_count + get_count);
           // Add the extra item over the limit
           if(over_limit)
-            extra += group.size - limit;
+            extra += group.count - limit;
           // number of items to apply the special
-          let on_special = group.size - extra;
+          let on_special = group.count - extra;
           // number of regular price items
           let num_regular_items = on_special / (buy_count + get_count) * buy_count + extra;
           // number of discounted items
@@ -72,15 +91,29 @@ module.exports = {
           // discounted price
           let discounted_price = Special.forEachPrice(special);
           // determine number items that do not apply to special
-          let extra = group.size - apply_to;
+          let extra = group.count - apply_to;
           subtotal = apply_to * discounted_price + extra * group.item.price;
         }
       } else if(group.item.per === 'pound') {
         // per pound specials
+        if(Special.isBuyGet(special)) {
+          // number to buy that triggers special
+          let buy_count = Special.buyCount(special);
+          // number the special applies to
+          let get_count = Special.getCount(special);
+          // discounted price
+          let discounted_price = Special.forEachPrice(special);
+
+        }
       }
     } else {
-      // no special
-      subtotal = (group.item.price - group.item.markdown) * group.size;
+      if(group.item.per === 'unit') {
+        // no special
+        subtotal = (group.item.price - group.item.markdown) * group.count;
+      } else if(group.item.per === 'pound') {
+        // no special
+        subtotal = (group.item.price - group.item.markdown) * group.weights.reduce((acc, i) => acc + i);
+      }
     }
 
     // round final cost to two decimals

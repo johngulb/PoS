@@ -244,13 +244,13 @@ describe('Calculate item by weight subtotal', () => {
   context('apples at $0.99/lb', () => {
 
     it('1 lb apples should cost $0.99', () => {
-      order.add('apple', 1);
+      order.add('apple', 1, 1.0);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(0.99);
     })
 
     it('2.5 lbs of apples should cost $2.47 (floor beyond second decimal, i.e. not $2.475)', () => {
-      order.add('apple', 2.5);
+      order.add('apple', 1, 2.5);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(2.47);
     })
@@ -261,14 +261,14 @@ describe('Calculate item by weight subtotal', () => {
 
     it('1 lb apples should cost $0.89', () => {
       inventory.update('apple', 'markdown', 0.10);
-      order.add('apple', 1);
+      order.add('apple', 1, 1.0);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(0.89);
     })
 
     it('2.5 lbs of apples should cost $2.22', () => {
       inventory.update('apple', 'markdown', 0.10);
-      order.add('apple', 2.5);
+      order.add('apple', 1, 2.5);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(2.22);
     })
@@ -304,14 +304,14 @@ describe('Calculate item by weight subtotal, specials', () => {
     })
 
     it('purchase 1 @ 1.5 lb should cost $10.49', () => {
-      order.add('steak', 1.5);
+      order.add('steak', 1, 1.5);
       let subtotal = order.subtotal('steak');
       expect(subtotal).to.equal(10.49);
     })
 
     it('purchase 1 @ 1.5 lb and 1 @ 1lb should cost $13.97', () => {
-      order.add('steak', 1.5);
-      order.add('steak', 1);
+      order.add('steak', 1, 1.5);
+      order.add('steak', 1, 1.0);
       let subtotal = order.subtotal('steak');
       expect(subtotal).to.equal(13.97);
     })

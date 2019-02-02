@@ -23,9 +23,10 @@ describe('Scanner', () => {
   context('add item', () => {
     it('should update order', () => {
       let weight = 0.5;
-      order.add('apple', weight);
+      order.add('apple', 1, weight);
       let apples = order.lookup('apple');
-      expect(apples.size).to.equal(weight);
+      expect(apples.count).to.equal(1);
+      expect(apples.weights[0]).to.equal(weight);
     })
   })
 
