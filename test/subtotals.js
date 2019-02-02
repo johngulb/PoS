@@ -50,6 +50,94 @@ describe('Calculate eaches subtotal', () => {
 
   })
 
+  context('doritos on special, buy 1 get 1 50% off', () => {
+
+    it('buy 1 should cost regular price, $3.99', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 50% off');
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+    it('buy 2 should cost, $3.99 + $1.99 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 50% off');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(5.98);
+    })
+
+    it('buy 3 should cost, 2 @ $3.99  + 1 @ $1.99 = $9.97', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 50% off');
+      order.add('doritos', 3);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(9.97);
+    })
+
+    it('buy 4 should cost, 2 @ $3.99  + 2 @ $1.99 = $11.96', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 50% off');
+      order.add('doritos', 4);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(11.96);
+    })
+
+    it('buy 2 should cost, $3.99 + $1.99 = $5.98, substitute half for %50', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 half off');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(5.98);
+    })
+
+  })
+
+  context('doritos on special, buy 1 get 1 free', () => {
+
+    it('buy 1 should cost regular price, $3.99', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free');
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+    it('buy 2 should cost, $3.99 + $0.00 = $3.99', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+  })
+
+  context('doritos on special, buy 1 get 1 free, limit 4', () => {
+
+    it('buy 1 should cost regular price, $3.99', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free, limit 4');
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+    it('buy 3 should cost, 2 @ $3.99 + 1 @ $0.00 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free, limit 4');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(5.98);
+    })
+
+    it('buy 4 should cost, 2 @ $3.99 + 2 @ $0.00 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free, limit 4');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(5.98);
+    })
+
+    it('buy 6 should cost, 4 @ $3.99 + 2 @ $0.00 = $15.96', () => {
+      inventory.update('doritos', 'special', 'buy 1 get 1 free, limit 4');
+      order.add('doritos', 2);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(15.96);
+    })
+
+  })
 
 })
 
@@ -105,30 +193,6 @@ describe('Calculate item by weight subtotal', () => {
 })
 
 // describe('Calculate items subtotal', () => {
-//
-//   context('per unit with markdown subtotal', () => {
-//     it('TODO: add test case', () => {
-//       assert(0);
-//     })
-//   })
-//
-//   context('by weight with markdown subtotal', () => {
-//     it('TODO: add test case', () => {
-//       assert(0);
-//     })
-//   })
-//
-//   context('item with markdown subtotal', () => {
-//     it('TODO: add test case', () => {
-//       assert(0);
-//     })
-//   })
-//
-//   context('item on special subtotal', () => {
-//     it('TODO: add test case', () => {
-//       assert(0);
-//     })
-//   })
 //
 //   context('apply special "Buy N items get M at %X off"', () => {
 //     it('only every .', () => {
