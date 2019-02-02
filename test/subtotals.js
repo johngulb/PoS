@@ -32,6 +32,25 @@ describe('Calculate eaches subtotal', () => {
 
   })
 
+  context('doritos at $3.99 each with $1.00 markdown', () => {
+
+    it('1 doritos should cost $2.99', () => {
+      inventory.update('doritos', 'markdown', 1.00);
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(2.99);
+    })
+
+    it('3 doritos should cost $8.97', () => {
+      inventory.update('doritos', 'markdown', 1.00);
+      order.add('doritos', 3);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(8.97);
+    })
+
+  })
+
+
 })
 
 
@@ -85,63 +104,63 @@ describe('Calculate item by weight subtotal', () => {
 
 })
 
-describe('Calculate eaches subtotal', () => {
-
-  context('per unit with markdown subtotal', () => {
-    it('TODO: add test case', () => {
-      assert(0);
-    })
-  })
-
-  context('by weight with markdown subtotal', () => {
-    it('TODO: add test case', () => {
-      assert(0);
-    })
-  })
-
-  context('item with markdown subtotal', () => {
-    it('TODO: add test case', () => {
-      assert(0);
-    })
-  })
-
-  context('item on special subtotal', () => {
-    it('TODO: add test case', () => {
-      assert(0);
-    })
-  })
-
-  context('apply special "Buy N items get M at %X off"', () => {
-    it('only every .', () => {
-      assert(0);
-    })
-  })
-
-  context('apply special "N for $X"', () => {
-    it('N items cost $X', () => {
-      assert(0);
-    })
-    it('N+1 is normal price unless N=1', () => {
-      assert(0);
-    })
-  })
-
-  context('limit the number of times a special can be applied', () => {
-    it('item', () => {
-      assert(0);
-    })
-  })
-
-  context('Buy N, get M of equal or lesser value for %X off', () => {
-    it('TODO: add test case', () => {
-      assert(0);
-    })
-  })
-
-  context('item does not have a special', () => {
-    it('the additional cost of each item is the same', () => {
-      assert(0);
-    })
-  })
-
-});
+// describe('Calculate items subtotal', () => {
+//
+//   context('per unit with markdown subtotal', () => {
+//     it('TODO: add test case', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('by weight with markdown subtotal', () => {
+//     it('TODO: add test case', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('item with markdown subtotal', () => {
+//     it('TODO: add test case', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('item on special subtotal', () => {
+//     it('TODO: add test case', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('apply special "Buy N items get M at %X off"', () => {
+//     it('only every .', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('apply special "N for $X"', () => {
+//     it('N items cost $X', () => {
+//       assert(0);
+//     })
+//     it('N+1 is normal price unless N=1', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('limit the number of times a special can be applied', () => {
+//     it('item', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('Buy N, get M of equal or lesser value for %X off', () => {
+//     it('TODO: add test case', () => {
+//       assert(0);
+//     })
+//   })
+//
+//   context('item does not have a special', () => {
+//     it('the additional cost of each item is the same', () => {
+//       assert(0);
+//     })
+//   })
+//
+// });
