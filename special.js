@@ -2,11 +2,19 @@ const word_to_number = require('./word-to-number');
 
 module.exports = {
 
-  buy(special) {
+  isBuyGet(special) {
+    return special.match(/buy ([0-9]+|[A-z]+) get ([0-9]+|[A-z]+)/) ?  true : false;
+  },
+
+  isForEach(special) {
+    return special.match(/([0-9]+|[A-z]+) for \$[0-9]+(\.\d{2})?/) ?  true : false;
+  },
+
+  buyCount(special) {
     return this.extactNumbericValue(special, 'buy');
   },
 
-  get(special) {
+  getCount(special) {
     return this.extactNumbericValue(special, 'get');
   },
 
