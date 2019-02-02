@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 
 
-describe('Calculate item subtotals', () => {
+describe('Calculate item by weight subtotal', () => {
 
   beforeEach(() => {
     inventory = require('../inventory');
@@ -17,18 +17,43 @@ describe('Calculate item subtotals', () => {
     });
   })
 
-  context('by weight subtotal', () => {
-    it('1 lb apples for $0.99 per pound should cost $0.99', () => {
+  context('apples at $0.99/lb', () => {
+
+    it('1 lb apples should cost $0.99', () => {
       order.add('apple', 1);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(0.99);
     })
-    it('2.5 lbs of apples for $0.99 per pound should cost $2.47 (floor beyond second decimal, i.e. not $2.475)', () => {
+
+    it('2.5 lbs of apples should cost $2.47 (floor beyond second decimal, i.e. not $2.475)', () => {
       order.add('apple', 2.5);
       let subtotal = order.subtotal('apple');
       expect(subtotal).to.equal(2.47);
     })
+
   })
+
+  context('apples at $0.99/lb with $0.10 markdown', () => {
+
+    it('1 lb apples should cost $0.89', () => {
+      inventory.update('apple', 'markdown', 0.10);
+      order.add('apple', 1);
+      let subtotal = order.subtotal('apple');
+      expect(subtotal).to.equal(0.89);
+    })
+
+    it('2.5 lbs of apples should cost $2.22', () => {
+      inventory.update('apple', 'markdown', 0.10);
+      order.add('apple', 2.5);
+      let subtotal = order.subtotal('apple');
+      expect(subtotal).to.equal(2.22);
+    })
+
+  })
+
+})
+
+describe('Calculate item by weight subtotal', () => {
 
   context('per unit with markdown subtotal', () => {
     it('TODO: add test case', () => {

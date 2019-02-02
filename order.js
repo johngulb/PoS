@@ -28,7 +28,7 @@ module.exports = {
 
   subtotal(upc) {
     let group = this.items[upc];
-    return Math.floor((group.item.price * group.size) * 100) / 100;
+    return Math.floor(((group.item.price - group.item.markdown) * group.size) * 100) / 100;
   },
 
   total() {
