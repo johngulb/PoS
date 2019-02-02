@@ -2,6 +2,38 @@ const chai = require('chai');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
 
+describe('Calculate eaches subtotal', () => {
+
+  beforeEach(() => {
+    inventory = require('../inventory');
+    order = require('../order');
+    order.clear();
+    inventory.add({
+      upc: 'doritos',
+      price: 3.99,
+      per: 'unit',
+      markdown: 0.00,
+    });
+  })
+
+  context('doritos at $3.99 each', () => {
+
+    it('1 doritos should cost $3.99', () => {
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+    it('3 doritos should cost $11.97', () => {
+      order.add('doritos', 3);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(11.97);
+    })
+
+  })
+
+})
+
 
 describe('Calculate item by weight subtotal', () => {
 
@@ -53,7 +85,7 @@ describe('Calculate item by weight subtotal', () => {
 
 })
 
-describe('Calculate item by weight subtotal', () => {
+describe('Calculate eaches subtotal', () => {
 
   context('per unit with markdown subtotal', () => {
     it('TODO: add test case', () => {
