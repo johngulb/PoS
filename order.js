@@ -44,20 +44,21 @@ module.exports = {
         let percent_discount = Special.discount(special);
         let limit = Special.limit(special);
         // "Buy N get M"
-        if((matches = special.match(/buy ([0-9+]) get ([0-9+])/))) {
-          let buy = Number(matches[1]), get = Number(matches[2]);
+        if((matches = special.match(/buy ([0-9]+|[A-z]+) get ([0-9]+|[A-z]+)/))) {
+          let buy_count = Special.buy(special);
+          let get_count = Special.get(special);
           let over_limit = limit && group.size > limit;
           let apply_to = over_limit ? limit : group.size;
-          let extra = apply_to % (buy + get);
+          let extra = apply_to % (buy_count + get_count);
           // Add the extra item over the limit
           if(over_limit)
             extra += group.size - limit;
           // number of items to apply the special
           let on_special = group.size - extra;
           // number of regular price items
-          let num_regular_items = on_special / (buy + get) * buy + extra;
+          let num_regular_items = on_special / (buy_count + get_count) * buy_count + extra;
           // number of discounted items
-          let num_discounted_items = on_special / (buy + get) * get;
+          let num_discounted_items = on_special / (buy_count + get_count) * get_count;
           // cost of regular items
           let regular_cost = num_regular_items * cost(group.item.price, group.item.markdown);
           // cost of discounted items

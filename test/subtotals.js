@@ -146,6 +146,46 @@ describe('Calculate eaches subtotal', () => {
 
   })
 
+  context('doritos on special w/ numerical values represented as a string, buy one get one free, limit four', () => {
+
+
+    it('buy 1 should cost regular price, $3.99', () => {
+      inventory.update('doritos', 'special', 'buy one get one free, limit four');
+      order.add('doritos', 1);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(3.99);
+    })
+
+    it('buy 3 should cost, 2 @ $3.99 + 1 @ $0.00 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy one get one free, limit four');
+      order.add('doritos', 3);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(7.98);
+    })
+
+    it('buy 4 should cost, 2 @ $3.99 + 2 @ $0.00 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy one get one free, limit four');
+      order.add('doritos', 4);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(7.98);
+    })
+
+    it('buy 5 should cost, 3 @ $3.99 + 2 @ $0.00 = $5.98', () => {
+      inventory.update('doritos', 'special', 'buy one get one free, limit four');
+      order.add('doritos', 5);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(11.97);
+    })
+
+    it('buy 6 should cost, 4 @ $3.99 + 2 @ $0.00 = $15.96', () => {
+      inventory.update('doritos', 'special', 'buy one get one free, limit four');
+      order.add('doritos', 6);
+      let subtotal = order.subtotal('doritos');
+      expect(subtotal).to.equal(15.96);
+    })
+
+  })
+
 })
 
 
