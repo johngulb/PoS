@@ -15,8 +15,7 @@ describe('Scanner', () => {
       upc: 'apple',
       price: 0.99,
       per: 'pound',
-      markdown: 0.00,
-      special: 'buy 1 get 1 free'
+      markdown: 0.00
     });
   })
 

@@ -214,7 +214,7 @@ describe('Calculate eaches subtotal', () => {
       expect(subtotal).to.equal(8.00);
     })
 
-    it('buy 9, should cost $11.99, 8 @ $2.00 + 1 @ $3.99', () => {
+    it('buy 9, should cost $19.99, 8 @ $2.00 + 1 @ $3.99', () => {
       let special = "4 for $8, limit 8";
       inventory.update('doritos', 'special', special);
       order.add('doritos', 9);

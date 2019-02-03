@@ -27,6 +27,9 @@ module.exports = {
       }
       this.items[upc].count += count;
     }
+
+    // Update items subtotal
+    this.items[upc].subtotal = this.subtotal(upc);
   },
 
   remove(upc, weight = 0.0) {
@@ -41,6 +44,9 @@ module.exports = {
         this.items[upc].count -= count;
       }
     }
+
+    // Update items subtotal
+    this.items[upc].subtotal = this.subtotal(upc);
   },
 
   lookup(upc) {
@@ -177,7 +183,13 @@ module.exports = {
   },
 
   total() {
-
+    let total = 0;
+    for (var upc in this.items) {
+      if (this.items.hasOwnProperty(upc)) {
+        total += this.items[upc].subtotal;
+      }
+    }
+    return total;
   },
 
   clear() {
