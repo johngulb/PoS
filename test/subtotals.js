@@ -279,7 +279,7 @@ describe('Calculate item by weight subtotal', () => {
 
 describe('Calculate item by weight subtotal, specials', () => {
 
-  let special = 'buy 1 get 1 of equal or lesser value for 50% off';
+  let special = 'buy 1 get 1 of equal or lesser value for 50% off, limit 4';
 
   beforeEach(() => {
     inventory = require('../inventory');
@@ -314,6 +314,17 @@ describe('Calculate item by weight subtotal, specials', () => {
       order.add('steak', 1, 1.0);
       let subtotal = order.subtotal('steak');
       expect(subtotal).to.equal(13.97);
+    })
+
+    it('purchase 1.5lb, 1.2lb, 1.3lb, 1.4lb, 1.1lb, 1lb should cost $43.29', () => {
+      order.add('steak', 1, 1.5);
+      order.add('steak', 1, 1.2);
+      order.add('steak', 1, 1.3);
+      order.add('steak', 1, 1.4);
+      order.add('steak', 1, 1.1);
+      order.add('steak', 1, 1.0);
+      let subtotal = order.subtotal('steak');
+      expect(subtotal).to.equal(43.29);
     })
 
   })

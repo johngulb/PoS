@@ -106,21 +106,43 @@ module.exports = {
           let weights = group.weights.slice();
           weights.sort().reverse();
 
-          // console.log(`BUY: ${buy_count} GET: ${get_count} DISCOUNT: ${percent_discount} WEIGHTS: `, weights);
+          // initialize values to keep track of when to apply discount
+          let bought_full_price = 0, purchased = 0;
 
-          let bought = 0;
           // pop off the number of items until we git the buy count
           while (weights.length) {
+
+            // get the next items weight
             let buy_weight = weights.shift();
-            subtotal += buy_weight * cost(group.item.price, group.item.markdown);
-            bought++;
+
+            // add full price item to subtotal
+            subtotal += cost(buy_weight * cost(group.item.price, group.item.markdown));
+            bought_full_price++;
+            purchased++;
+
+            // determine if we are at the limit for discounted purchases
+            let at_limit = limit && purchased >= limit;
+
             // once we hit the buy count, start tallying items at discount
-            if(buy_count === bought && get_count) {
-              let get = 0;
+            if(!at_limit && buy_count === bought_full_price && get_count) {
+
+              // to keep track of the number of items bought at discount
+              let bought_discounted_price = 0;
+
               while (weights.length) {
+
+                // get the next items weight
                 let get_weight = weights.shift();
-                subtotal += get_weight * cost(group.item.price, group.item.markdown, percent_discount);
-                if(get === get_count) {
+
+                // add discounted item to subtotal
+                let discount_price = cost(get_weight * cost(group.item.price, group.item.markdown, percent_discount));
+                subtotal += discount_price;
+                bought_discounted_price++;
+                purchased++;
+
+                // once we purchase the number of items we get at a discount, start paying full price again
+                if(bought_discounted_price === get_count) {
+                  bought_full_price = 0;
                   break;
                 }
               }
