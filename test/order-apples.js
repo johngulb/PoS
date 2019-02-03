@@ -15,6 +15,7 @@ describe('Test Order #1', () => {
     server = api.listen(3001);
     inventory = require('../inventory');
     order = require('../order');
+    order.clear();
     inventory.add({
       upc: 'apple',
       price: 0.99,
