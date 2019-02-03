@@ -5,7 +5,13 @@ module.exports = {
   },
 
   add(attrs) {
-    this.items[attrs.upc] = attrs;
+    this.items[attrs.upc] = {
+      upc: attrs.upc,
+      price: Number(attrs.price),
+      per: attrs.per,
+      markdown: Number(attrs.markdown),
+      special: attrs.special,
+    };
   },
 
   update(upc, attr, value) {
