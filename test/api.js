@@ -12,11 +12,11 @@ describe('api', () => {
   beforeEach(() => {
     let api = require('../api');
     server = api.listen(3001);
-  });
+  })
 
   afterEach(() => {
     server.close();
-  });
+  })
 
   context('GET /', () => {
     it('should return "A point of sale rest api"', (done) => {
@@ -31,4 +31,4 @@ describe('api', () => {
     })
   })
 
-});
+})

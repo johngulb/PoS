@@ -7,7 +7,7 @@ module.exports = {
   items: {},
 
   add(upc, count = 1, weight = 0.0) {
-    item = Inventory.lookup(upc);
+    let item = Inventory.lookup(upc);
     if (item.per === 'pound') {
       if (!this.items[upc]) {
         this.items[upc] = {
@@ -16,7 +16,7 @@ module.exports = {
           weights: []
         };
       }
-      this.items[upc].weights.push(weight);
+      this.items[upc].weights.push(Number(weight));
       this.items[upc].count = this.items[upc].weights.length;
     } else if (item.per === 'unit') {
       if (!this.items[upc]) {
@@ -32,21 +32,27 @@ module.exports = {
     this.items[upc].subtotal = this.subtotal(upc);
   },
 
-  remove(upc, weight = 0.0) {
+  remove(upc, count = 1, weight = 0.0) {
     item = Inventory.lookup(upc);
-    if (item.per === 'pound') {
-      let weights = this.items[upc].weights;
-      let i = weights.indexOf(weight);
-      weights.spice(i, 1);
-      this.items[upc].count = this.items[upc].weights.length;
-    } else {
-      if (this.items[upc].count > 0) {
-        this.items[upc].count -= count;
+    let group = this.items[upc];
+    if(group) {
+      if (item.per === 'pound') {
+        let weights = group.weights;
+        let i = weights.indexOf(Number(weight));
+        if(i === -1)
+          throw new Error('No item exists with this weight');
+        weights.splice(i, 1);
+        group.count = group.weights.length;
+      } else {
+        if (group.count > 0) {
+          group.count -= count;
+        }
       }
+      // Update items subtotal
+      group.subtotal = this.subtotal(upc);
+      return true;
     }
-
-    // Update items subtotal
-    this.items[upc].subtotal = this.subtotal(upc);
+    return true;
   },
 
   lookup(upc) {
@@ -174,7 +180,8 @@ module.exports = {
       if (group.item.per === 'unit') {
         subtotal = (group.item.price - group.item.markdown) * group.count;
       } else if (group.item.per === 'pound') {
-        subtotal = (group.item.price - group.item.markdown) * group.weights.reduce((acc, i) => acc + i);
+        let total_weight = group.weights.length ? group.weights.reduce((acc, i) => acc + i) : 0;
+        subtotal = (group.item.price - group.item.markdown) * total_weight;
       }
     }
 

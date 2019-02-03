@@ -11,6 +11,7 @@ describe('Scanner', () => {
   beforeEach(() => {
     inventory = require('../inventory');
     order = require('../order');
+    order.clear();
     inventory.add({
       upc: 'apple',
       price: 0.99,

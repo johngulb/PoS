@@ -12,11 +12,10 @@ describe('Inventory', () => {
     inventory.add({
       upc: 'apple',
       price: 0.99,
-      per: 'unit',
+      per: 'pound',
       markdown: 0.00,
-      special: 'buy 1 get 1 free'
-    });
-  });
+    })
+  })
 
   context('add item to inventory', () => {
     it('should be stored in inventory', () => {
